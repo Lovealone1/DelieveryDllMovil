@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:ubereatsdriver/utils/colors.dart';
+import 'package:food_delievery/utils/colors.dart';
 
 class AppTextStyles {
   static TextStyle authButtonTextStyle = TextStyle(
