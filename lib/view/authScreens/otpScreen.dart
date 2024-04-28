@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delievery/controller/provider/authProvider/MobileAuthProvider.dart';
+import 'package:food_delievery/controller/services/authServices/mobileAuthServices.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -50,7 +53,7 @@ class _OTPScreenState extends State<OTPScreen> {
             child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                    shape: StadiumBorder(),
+                    shape: const StadiumBorder(),
                     padding: EdgeInsets.all(2.h),
                     backgroundColor: greyShade2,
                     elevation: 2),
@@ -64,7 +67,10 @@ class _OTPScreenState extends State<OTPScreen> {
             right: 2.w,
             bottom: 3.h,
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  MobileAuthServices.verifyOTP(
+                      context: context, otp: otpController.text.trim());
+                },
                 style: ElevatedButton.styleFrom(
                     shape: StadiumBorder(),
                     padding:
@@ -77,7 +83,9 @@ class _OTPScreenState extends State<OTPScreen> {
                       'Siguiente',
                       style: AppTextStyles.body14,
                     ),
-                    SizedBox(width:2.w ,),
+                    SizedBox(
+                      width: 2.w,
+                    ),
                     FaIcon(
                       FontAwesomeIcons.arrowRight,
                       size: 3.h,
@@ -95,7 +103,7 @@ class _OTPScreenState extends State<OTPScreen> {
             height: 2.h,
           ),
           Text(
-            'Digite el código de 6 dígitos enviado a 302909102',
+            'Digite el código de 6 dígitos enviado a ${context.read<MobileAuthProvider>().mobileNumber!}',
             style: AppTextStyles.body16,
           ),
           SizedBox(
