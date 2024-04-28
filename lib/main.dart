@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delievery/view/authScreens/mobileLoginScreen.dart';
+//import 'package:food_delievery/view/authScreens/mobileLoginScreen.dart';
+import 'package:food_delievery/view/authScreens/otpScreen.dart';
 import 'package:sizer/sizer.dart';
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
         ),
-        home: MobileLoginScreen()
+        home: OTPScreen()
       );
     });
 

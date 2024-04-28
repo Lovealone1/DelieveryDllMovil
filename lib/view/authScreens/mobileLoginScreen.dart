@@ -56,7 +56,8 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4.sp),
-                    color: greyShade3,
+                    border: Border.all(color: grey)
+                    //color: greyShade3,
                   ),
                   child: Text(
                     selectedCountry,
@@ -76,8 +77,8 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                           EdgeInsets.symmetric(vertical: 0, horizontal: 2.w),
                       hintText: 'Numero de celular',
                       hintStyle: AppTextStyles.textFieldHintTextStyle,
-                      filled: true,
-                      fillColor: greyShade3,
+                      //filled: true,
+                      //fillColor: greyShade3,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide(
@@ -179,7 +180,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                       child: FaIcon(
                         FontAwesomeIcons.google,
                         color: black,
-                        size: 4.h,
+                        size: 3.h,
                       ))
                 ],
               ))
