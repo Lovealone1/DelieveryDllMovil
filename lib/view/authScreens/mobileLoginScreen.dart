@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delievery/controller/provider/authProvider/MobileAuthProvider.dart';
+import 'package:food_delievery/controller/services/authServices/mobileAuthServices.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:country_picker/country_picker.dart';
 
@@ -16,6 +19,18 @@ class MobileLoginScreen extends StatefulWidget {
 class _MobileLoginScreenState extends State<MobileLoginScreen> {
   String selectedCountry = '+57';
   TextEditingController mobileController = TextEditingController();
+  bool receiveOTPButtonPressed = false; 
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        receiveOTPButtonPressed = false; 
+      });
+     });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -104,14 +119,20 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
             height: 3.h,
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  receiveOTPButtonPressed = true; 
+                });
+                context.read<MobileAuthProvider>().updateMobileNumber('$selectedCountry${mobileController.text.trim()}');
+                MobileAuthServices.recieveOTP(context: context, mobileNo: '$selectedCountry${mobileController.text.trim()}');
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: black,
                   minimumSize: Size(90.w, 6.h),
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   )),
-              child: Stack(
+              child: receiveOTPButtonPressed? CircularProgressIndicator(color:white ,): Stack(
                 children: [
                   Align(
                     alignment: Alignment.center,

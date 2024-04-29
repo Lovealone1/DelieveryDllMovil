@@ -1,28 +1,40 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delievery/controller/provider/authProvider/MobileAuthProvider.dart';
+import 'package:food_delievery/firebase_options.dart';
 //import 'package:food_delievery/view/authScreens/mobileLoginScreen.dart';
 //import 'package:food_delievery/view/authScreens/otpScreen.dart';
-import 'package:food_delievery/view/bottomNavigationBar/bottomNavigationBar.dart';
+//import 'package:food_delievery/view/bottomNavigationBar/bottomNavigationBar.dart';
+import 'package:food_delievery/view/signInLogicScreen/signInLoginScreen.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-void main() {
-  runApp(const MyApp());
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const FoodDelievery());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FoodDelievery extends StatelessWidget {
+  const FoodDelievery({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, _,__){
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-        ),
-        home: BottomNavigationBarDelievery()
+    return Sizer(builder: (context, _, __) {
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<MobileAuthProvider>(
+            create: (_) => MobileAuthProvider(),
+          ),
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(),
+            home: const SignInLogicScreen()),
       );
     });
-
   }
 }
-
-
