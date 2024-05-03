@@ -66,9 +66,14 @@ class MobileAuthServices {
         smsCode: otp,
       );
       await auth.signInWithCredential(credential);
-      PageTransition(
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        PageTransition(
           child: const SignInLogicScreen(),
-          type: PageTransitionType.rightToLeft);
+          type: PageTransitionType.rightToLeft,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       throw Exception(e);
