@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delievery/controller/services/authServices/fetchRestaurantsServices/fetchRestaurantServices.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/view/account/account.dart';
 import 'package:food_delievery/view/basket/basketScreen.dart';
@@ -16,8 +17,15 @@ class BottomNavigationBarDelievery extends StatefulWidget {
 }
 
 class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDelievery> {
-
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_)async { 
+      RestaurantServices.getNearbyRestaurants(context);
+    });
+  }
   PersistentTabController controller =  PersistentTabController(initialIndex: 0);
+
   List<Widget> _buildScreens(){
     return [
       const HomeScreen(),
