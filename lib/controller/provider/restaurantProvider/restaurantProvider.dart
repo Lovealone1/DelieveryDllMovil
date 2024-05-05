@@ -8,6 +8,7 @@ import 'package:food_delievery/model/restaurantModel.dart';
 class RestaurantProvider extends ChangeNotifier {
   List<RestaurantModel> restaurants = [];
   List<FoodModel> foods = [];
+  List<FoodModel> restaurantMenu = [];
   addRestaurants(String restaurantID)async{
     RestaurantModel data = await RestaurantServices.fetchRestaurantData(restaurantID);
     restaurants.add(data);
@@ -22,5 +23,19 @@ class RestaurantProvider extends ChangeNotifier {
     notifyListeners();
     log('Total de platillos capturados');
     log(foods.length.toString());
+  }
+
+  getRestaurantMenu(String restaurantID){
+    for(var data in foods){
+      if(data.restaurantUID == restaurantID){
+        restaurantMenu.add(data);
+      }
+    }
+    notifyListeners();
+  }
+
+  emptyRestaurantMenu(){
+    restaurantMenu = [];
+    notifyListeners();
   }
 }

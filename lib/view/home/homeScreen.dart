@@ -4,6 +4,8 @@ import 'package:food_delievery/controller/provider/restaurantProvider/restaurant
 import 'package:food_delievery/model/restaurantModel.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
+import 'package:food_delievery/view/particularRestaurantMenuScren/restaurantMenuScreen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -159,52 +161,65 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     RestaurantModel restaurant =
                         restaurantProvider.restaurants[index];
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                          margin: EdgeInsets.symmetric(vertical: 1.5.h,),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.sp),
-                          border: Border.all(color: black38)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 23.h,
-                            width: 94.w,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.sp),
-                                border: Border.all(color: greyShade3)),
-                            child: CarouselSlider(
-                              carouselController: controller,
-                              options: CarouselOptions(
-                                height: 23.h,
-                                autoPlay: true,
-                                viewportFraction: 1,
-                              ),
-                              items: restaurant.bannerImages!
-                                  .map(
-                                    (image) => Container(
-                                      width: 94.w,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(image),
-                                          fit: BoxFit.cover,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                              child: ParticularRestaurantMenuScreen(
+                                  restaurantUID: restaurant.restaurantUID!, restaurantName: restaurant.restaurantName!,),
+                              type: PageTransitionType.rightToLeft,
+                            ));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 3.w, vertical: 2.h),
+                        margin: EdgeInsets.symmetric(
+                          vertical: 1.5.h,
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.sp),
+                            border: Border.all(color: black38)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 23.h,
+                              width: 94.w,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.sp),
+                                  border: Border.all(color: greyShade3)),
+                              child: CarouselSlider(
+                                carouselController: controller,
+                                options: CarouselOptions(
+                                  height: 23.h,
+                                  autoPlay: true,
+                                  viewportFraction: 1,
+                                ),
+                                items: restaurant.bannerImages!
+                                    .map(
+                                      (image) => Container(
+                                        width: 94.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(image),
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
+                                    )
+                                    .toList(),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          Text(
-                            restaurant.restaurantName!,
-                            style: AppTextStyles.body16Bold,
-                          )
-                        ],
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Text(
+                              restaurant.restaurantName!,
+                              style: AppTextStyles.body16Bold,
+                            )
+                          ],
+                        ),
                       ),
                     );
                   });
