@@ -3,6 +3,8 @@ import 'package:food_delievery/controller/provider/restaurantProvider/restaurant
 import 'package:food_delievery/model/foodModel.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
+import 'package:food_delievery/view/foodDetailsScreen/foodDetailsScreen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -27,7 +29,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
               controller: searchFoodController,
               cursorColor: black,
               style: AppTextStyles.textFieldTextStyle,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.name,
               onChanged: (value) {
                 context
                     .read<RestaurantProvider>()
@@ -79,59 +81,68 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     FoodModel foodData = restaurantProvider.searchedFood[index];
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 1.5.h),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.sp),
-                        border: Border.all(
-                          color: black,
+                    return InkWell(
+                      onTap: (){
+                        Navigator.push(
+                        context,
+                        PageTransition(
+                            child: FoodDetailsScreen(foodModel: foodData),
+                            type: PageTransitionType.rightToLeft));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 1.5.h),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.sp),
+                          border: Border.all(
+                            color: black,
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 20.h,
-                            width: 100.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.sp),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                    foodData.foodImageURL,
-                                  ),
-                                  fit: BoxFit.cover),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 20.h,
+                              width: 100.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.sp),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                      foodData.foodImageURL,
+                                    ),
+                                    fit: BoxFit.cover),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          Text(
-                            foodData.name,
-                            style: AppTextStyles.body14Bold,
-                          ),
-                          SizedBox(
-                            height: 0.5.h,
-                          ),
-                          Text(
-                            foodData.description,
-                            style: AppTextStyles.small12.copyWith(
-                              color: grey,
+                            SizedBox(
+                              height: 1.h,
                             ),
-                          ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text('COP\$${foodData.price}',
-                                  style: AppTextStyles.body16Bold),
-                            ],
-                          ),
-                        ],
+                            Text(
+                              foodData.name,
+                              style: AppTextStyles.body14Bold,
+                            ),
+                            SizedBox(
+                              height: 0.5.h,
+                            ),
+                            Text(
+                              foodData.description,
+                              style: AppTextStyles.small12.copyWith(
+                                color: grey,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text('COP\$${foodData.discountedPrice}',
+                                    style: AppTextStyles.body16Bold),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   });
