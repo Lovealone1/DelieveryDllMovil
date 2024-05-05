@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delievery/controller/provider/authProvider/MobileAuthProvider.dart';
+import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
 import 'package:food_delievery/firebase_options.dart';
 //import 'package:food_delievery/view/authScreens/mobileLoginScreen.dart';
 //import 'package:food_delievery/view/authScreens/otpScreen.dart';
@@ -27,6 +28,9 @@ class FoodDelievery extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<MobileAuthProvider>(
             create: (_) => MobileAuthProvider(),
+          ),
+          ChangeNotifierProvider<RestaurantProvider>(
+            create: (_) => RestaurantProvider(),
           ),
         ],
         child: MaterialApp(

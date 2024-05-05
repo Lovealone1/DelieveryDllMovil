@@ -1,6 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
+import 'package:food_delievery/model/restaurantModel.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
+import 'package:food_delievery/view/particularRestaurantMenuScren/restaurantMenuScreen.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ['assets/categories/petSupplies.png', 'Mascotas'],
     ['assets/categories/takeout.png', 'Domicilios'],
   ];
+  CarouselController controller = CarouselController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -129,20 +136,95 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 2.h,
           ),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: 18.h,
-                  width: 94.w,
-                  margin: EdgeInsets.symmetric(vertical: 1.h),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.sp),
-                      color: greyShade3),
-                );
-              })
+          Consumer<RestaurantProvider>(
+              builder: (context, restaurantProvider, child) {
+            if (restaurantProvider.restaurants.isEmpty) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 18.h,
+                      width: 94.w,
+                      margin: EdgeInsets.symmetric(vertical: 1.h),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.sp),
+                          color: greyShade3),
+                    );
+                  });
+            } else {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: restaurantProvider.restaurants.length,
+                  itemBuilder: (context, index) {
+                    RestaurantModel restaurant =
+                        restaurantProvider.restaurants[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                              child: ParticularRestaurantMenuScreen(
+                                  restaurantUID: restaurant.restaurantUID!, restaurantName: restaurant.restaurantName!,),
+                              type: PageTransitionType.rightToLeft,
+                            ));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 3.w, vertical: 2.h),
+                        margin: EdgeInsets.symmetric(
+                          vertical: 1.5.h,
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.sp),
+                            border: Border.all(color: black38)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 23.h,
+                              width: 94.w,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.sp),
+                                  border: Border.all(color: greyShade3)),
+                              child: CarouselSlider(
+                                carouselController: controller,
+                                options: CarouselOptions(
+                                  height: 23.h,
+                                  autoPlay: true,
+                                  viewportFraction: 1,
+                                ),
+                                items: restaurant.bannerImages!
+                                    .map(
+                                      (image) => Container(
+                                        width: 94.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(image),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Text(
+                              restaurant.restaurantName!,
+                              style: AppTextStyles.body16Bold,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            }
+          }),
         ],
       )),
     );

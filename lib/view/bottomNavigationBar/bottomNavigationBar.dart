@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delievery/controller/services/authServices/fetchRestaurantsServices/fetchRestaurantServices.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/view/account/account.dart';
 import 'package:food_delievery/view/basket/basketScreen.dart';
-import 'package:food_delievery/view/browse/browse.dart';
-import 'package:food_delievery/view/grocery/groceryScreen.dart';
+import 'package:food_delievery/view/categoryScreen/categoryScreen.dart';
+import 'package:food_delievery/view/browseScreen/browseScreen.dart';
 import 'package:food_delievery/view/home/homeScreen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -16,13 +17,20 @@ class BottomNavigationBarDelievery extends StatefulWidget {
 }
 
 class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDelievery> {
-
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_)async { 
+      RestaurantServices.getNearbyRestaurants(context);
+    });
+  }
   PersistentTabController controller =  PersistentTabController(initialIndex: 0);
+
   List<Widget> _buildScreens(){
     return [
       const HomeScreen(),
+      const CategoryScreen(),
       const BrowseScreen(),
-      const GroceryScreen(),
       const BasketScreen(),
       const AccountScreen()
     ];
@@ -37,14 +45,14 @@ class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDeliev
                 inactiveColorPrimary:grey,
             ),
             PersistentBottomNavBarItem(
-                icon:FaIcon(FontAwesomeIcons.magnifyingGlass),
-                title: ("Buscar"),
+                icon:FaIcon(FontAwesomeIcons.burger),
+                title: ("Categorias"),
                 activeColorPrimary: black,
                 inactiveColorPrimary:grey,
             ),
             PersistentBottomNavBarItem(
-                icon:FaIcon(FontAwesomeIcons.basketShopping),
-                title: ("Tiendas"),
+                icon:FaIcon(FontAwesomeIcons.magnifyingGlass),
+                title: ("Buscar"),
                 activeColorPrimary: black,
                 inactiveColorPrimary:grey,
             ),
