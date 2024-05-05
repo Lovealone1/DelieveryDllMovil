@@ -9,33 +9,52 @@ class RestaurantProvider extends ChangeNotifier {
   List<RestaurantModel> restaurants = [];
   List<FoodModel> foods = [];
   List<FoodModel> restaurantMenu = [];
-  addRestaurants(String restaurantID)async{
-    RestaurantModel data = await RestaurantServices.fetchRestaurantData(restaurantID);
+  List<FoodModel> searchedFood = [];
+  addRestaurants(String restaurantID) async {
+    RestaurantModel data =
+        await RestaurantServices.fetchRestaurantData(restaurantID);
     restaurants.add(data);
     notifyListeners();
     log('Restaurantes capturados');
     log(restaurants.length.toString());
   }
 
-  addFoods(String restaurantID)async{
-    List<FoodModel> foodData = await RestaurantServices.fetchFoodData(restaurantID);
+  addFoods(String restaurantID) async {
+    List<FoodModel> foodData =
+        await RestaurantServices.fetchFoodData(restaurantID);
     foods.addAll(foodData);
     notifyListeners();
     log('Total de platillos capturados');
     log(foods.length.toString());
   }
 
-  getRestaurantMenu(String restaurantID){
-    for(var data in foods){
-      if(data.restaurantUID == restaurantID){
+  getRestaurantMenu(String restaurantID) {
+    for (var data in foods) {
+      if (data.restaurantUID == restaurantID) {
         restaurantMenu.add(data);
       }
     }
     notifyListeners();
   }
 
-  emptyRestaurantMenu(){
+  emptyRestaurantMenu() {
     restaurantMenu = [];
+    notifyListeners();
+  }
+
+  defultSearchedFood(){
+    searchedFood = foods; 
+    notifyListeners();
+  }
+
+  searchFoodItems(String foodName) {
+    searchedFood = [];
+    notifyListeners();
+    for (var data in foods) {
+      if (data.name.toLowerCase().contains(foodName.toLowerCase())) {
+        searchedFood.add(data);
+      }
+    }
     notifyListeners();
   }
 }

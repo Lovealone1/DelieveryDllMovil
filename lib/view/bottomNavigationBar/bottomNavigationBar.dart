@@ -4,8 +4,8 @@ import 'package:food_delievery/controller/services/authServices/fetchRestaurants
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/view/account/account.dart';
 import 'package:food_delievery/view/basket/basketScreen.dart';
-import 'package:food_delievery/view/browse/browse.dart';
-import 'package:food_delievery/view/grocery/groceryScreen.dart';
+import 'package:food_delievery/view/categoryScreen/categoryScreen.dart';
+import 'package:food_delievery/view/browseScreen/browseScreen.dart';
 import 'package:food_delievery/view/home/homeScreen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -29,8 +29,8 @@ class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDeliev
   List<Widget> _buildScreens(){
     return [
       const HomeScreen(),
+      const CategoryScreen(),
       const BrowseScreen(),
-      const GroceryScreen(),
       const BasketScreen(),
       const AccountScreen()
     ];
@@ -45,14 +45,14 @@ class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDeliev
                 inactiveColorPrimary:grey,
             ),
             PersistentBottomNavBarItem(
-                icon:FaIcon(FontAwesomeIcons.magnifyingGlass),
-                title: ("Buscar"),
+                icon:FaIcon(FontAwesomeIcons.burger),
+                title: ("Categorias"),
                 activeColorPrimary: black,
                 inactiveColorPrimary:grey,
             ),
             PersistentBottomNavBarItem(
-                icon:FaIcon(FontAwesomeIcons.basketShopping),
-                title: ("Tiendas"),
+                icon:FaIcon(FontAwesomeIcons.magnifyingGlass),
+                title: ("Buscar"),
                 activeColorPrimary: black,
                 inactiveColorPrimary:grey,
             ),

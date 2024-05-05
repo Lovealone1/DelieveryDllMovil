@@ -19,16 +19,16 @@ class MobileLoginScreen extends StatefulWidget {
 class _MobileLoginScreenState extends State<MobileLoginScreen> {
   String selectedCountry = '+57';
   TextEditingController mobileController = TextEditingController();
-  bool receiveOTPButtonPressed = false; 
+  bool receiveOTPButtonPressed = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        receiveOTPButtonPressed = false; 
+        receiveOTPButtonPressed = false;
       });
-     });
+    });
   }
 
   @override
@@ -70,10 +70,10 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                   width: 25.w,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.sp),
-                    border: Border.all(color: grey)
-                    //color: greyShade3,
-                  ),
+                      borderRadius: BorderRadius.circular(4.sp),
+                      border: Border.all(color: grey)
+                      //color: greyShade3,
+                      ),
                   child: Text(
                     selectedCountry,
                     style: AppTextStyles.body14,
@@ -81,38 +81,39 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                 ),
               ),
               SizedBox(
-                  width: 65.w,
-                  child: TextField(
-                    controller: mobileController,
-                    cursorColor: black,
-                    style: AppTextStyles.textFieldTextStyle,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 2.w),
-                      hintText: 'Numero de celular',
-                      hintStyle: AppTextStyles.textFieldHintTextStyle,
-                      //filled: true,
-                      //fillColor: greyShade3,
-                      border: OutlineInputBorder(
+                width: 65.w,
+                child: TextField(
+                  controller: mobileController,
+                  cursorColor: black,
+                  style: AppTextStyles.textFieldTextStyle,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 2.w),
+                    hintText: 'Numero de celular',
+                    hintStyle: AppTextStyles.textFieldHintTextStyle,
+                    //filled: true,
+                    //fillColor: greyShade3,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: grey,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: black,
+                      ),
+                    ),
+                    disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide(
                           color: grey,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(
-                          color: black,
-                        ),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: grey,
-                          )),
-                    ),
-                  ))
+                        )),
+                  ),
+                ),
+              ),
             ],
           ),
           SizedBox(
@@ -121,10 +122,14 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
           ElevatedButton(
               onPressed: () {
                 setState(() {
-                  receiveOTPButtonPressed = true; 
+                  receiveOTPButtonPressed = true;
                 });
-                context.read<MobileAuthProvider>().updateMobileNumber('$selectedCountry${mobileController.text.trim()}');
-                MobileAuthServices.recieveOTP(context: context, mobileNo: '$selectedCountry${mobileController.text.trim()}');
+                context.read<MobileAuthProvider>().updateMobileNumber(
+                    '$selectedCountry${mobileController.text.trim()}');
+                MobileAuthServices.recieveOTP(
+                    context: context,
+                    mobileNo:
+                        '$selectedCountry${mobileController.text.trim()}');
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: black,
@@ -132,20 +137,25 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   )),
-              child: receiveOTPButtonPressed? CircularProgressIndicator(color:white ,): Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Siguiente',
-                      style: AppTextStyles.body16.copyWith(color: white),
-                    ),
-                  ),
-                  Positioned(
-                      right: 2.w,
-                      child: Icon(Icons.arrow_forward, color: white, size: 4.h))
-                ],
-              )),
+              child: receiveOTPButtonPressed
+                  ? CircularProgressIndicator(
+                      color: white,
+                    )
+                  : Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Siguiente',
+                            style: AppTextStyles.body16.copyWith(color: white),
+                          ),
+                        ),
+                        Positioned(
+                            right: 2.w,
+                            child: Icon(Icons.arrow_forward,
+                                color: white, size: 4.h))
+                      ],
+                    )),
           SizedBox(
             height: 3.w,
           ),
