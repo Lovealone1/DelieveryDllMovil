@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_delievery/controller/services/authServices/fetchRestaurantsServices/fetchRestaurantServices.dart';
+import 'package:food_delievery/controller/services/fetchRestaurantsServices/fetchRestaurantServices.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/view/account/account.dart';
 import 'package:food_delievery/view/basket/basketScreen.dart';

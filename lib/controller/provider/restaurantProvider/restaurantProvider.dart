@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:food_delievery/controller/services/authServices/fetchRestaurantsServices/fetchRestaurantServices.dart';
+import 'package:food_delievery/controller/services/fetchRestaurantsServices/fetchRestaurantServices.dart';
 import 'package:food_delievery/model/foodModel.dart';
 import 'package:food_delievery/model/restaurantModel.dart';
 

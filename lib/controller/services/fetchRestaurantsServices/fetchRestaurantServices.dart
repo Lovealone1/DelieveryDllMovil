@@ -6,7 +6,7 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:food_delievery/constant/constant.dart';
 import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
 //import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
-import 'package:food_delievery/controller/services/authServices/locationServices/locationServices.dart';
+import 'package:food_delievery/controller/services/locationServices/locationServices.dart';
 import 'package:food_delievery/model/foodModel.dart';
 import 'package:food_delievery/model/restaurantIDnLocationModel.dart';
 import 'package:food_delievery/model/restaurantModel.dart';
