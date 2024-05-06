@@ -132,7 +132,14 @@ class _ParticularRestaurantMenuScreenState
                                 Text(
                                   'Off ${(((int.parse(foodData.actualPrice) - int.parse(foodData.discountedPrice)) / int.parse(foodData.actualPrice)) * 100).round().toString()}%',
                                   style: AppTextStyles.body14Bold,
-                                ), SizedBox(width: 2.w,), FaIcon(FontAwesomeIcons.tag, color: success,)
+                                ),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                FaIcon(
+                                  FontAwesomeIcons.tag,
+                                  color: success,
+                                )
                               ],
                             ),
                             Column(
