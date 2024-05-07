@@ -6,21 +6,25 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:food_delievery/constant/constant.dart';
 import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
 //import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
-import 'package:food_delievery/controller/services/locationServices/locationServices.dart';
+//import 'package:food_delievery/controller/services/locationServices/locationServices.dart';
+import 'package:food_delievery/controller/services/userDataCRUDServices/userDataCRUDServices.dart';
 import 'package:food_delievery/model/foodModel.dart';
 import 'package:food_delievery/model/restaurantIDnLocationModel.dart';
 import 'package:food_delievery/model/restaurantModel.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:food_delievery/model/userAddressModel.dart';
+//import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 //import 'package:provider/provider.dart';
 
 class RestaurantServices {
   static getNearbyRestaurants(BuildContext context) async {
     Geofire.initialize('Restaurantes');
-    Position currentPosition = await LocationServices.getCurrentLocation();
+    //Position currentPosition = await LocationServices.getCurrentLocation();
+    UserAddressModel userActiveAddress = await UserDataCRUDServices.fetchActiveAddress();
+    log(userActiveAddress.toMap().toString());
     Geofire.queryAtLocation(
-      currentPosition.latitude,
-      currentPosition.longitude,
+      userActiveAddress.latitude,
+      userActiveAddress.longitude,
       20,
     )!
         .listen((event) {
@@ -78,4 +82,6 @@ class RestaurantServices {
     }
     return foodData;
   }
+
+
 }
