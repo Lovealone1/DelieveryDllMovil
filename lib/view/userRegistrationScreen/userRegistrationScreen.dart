@@ -175,7 +175,9 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                   );
                   Position location =
                       await LocationServices.getCurrentLocation();
+                  String addressID = uuid.v1().toString();
                   UserAddressModel addressData = UserAddressModel(
+                      addressID: addressID,
                       userId: auth.currentUser!.uid,
                       latitude: location.latitude,
                       longitude: location.longitude,

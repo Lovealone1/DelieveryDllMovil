@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_delievery/controller/provider/profileProvider/profileProvider.dart';
+import 'package:food_delievery/controller/services/userDataCRUDServices/userDataCRUDServices.dart';
 import 'package:food_delievery/model/userAddressModel.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
@@ -86,6 +87,11 @@ class _AddressScreenState extends State<AddressScreen> {
                                   address.addressTitle,
                                   style: AppTextStyles.heading20Bold,
                                 ),
+                                CircleAvatar(
+                                  radius: 1.h,
+                                  backgroundColor:
+                                      address.isActive ? success : transparent,
+                                ),
                               ],
                             ),
                             SizedBox(
@@ -129,59 +135,108 @@ class _AddressScreenState extends State<AddressScreen> {
                             SizedBox(
                               height: 2.h,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2.w,
-                                    vertical: 1.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      5.sp,
+                            Builder(builder: (context) {
+                              if (address.isActive) {
+                                return Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w,
+                                        vertical: 1.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          5.sp,
+                                        ),
+                                        color: greyShade3,
+                                      ),
+                                      child: Text(
+                                        'Editar',
+                                        style: AppTextStyles.body14,
+                                      ),
                                     ),
-                                    color: greyShade3,
-                                  ),
-                                  child: Text(
-                                    'Marcar como activa',
-                                    style: AppTextStyles.body14,
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2.w,
-                                    vertical: 1.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      5.sp,
+                                    SizedBox(width: 1.5.h,),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w,
+                                        vertical: 1.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          5.sp,
+                                        ),
+                                        color: greyShade3,
+                                      ),
+                                      child: Text(
+                                        'Eliminar',
+                                        style: AppTextStyles.body14,
+                                      ),
                                     ),
-                                    color: greyShade3,
-                                  ),
-                                  child: Text(
-                                    'Editar',
-                                    style: AppTextStyles.body14,
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2.w,
-                                    vertical: 1.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      5.sp,
+                                  ],
+                                );
+                              } else {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: ()async{
+                                        await UserDataCRUDServices.setAddressAsActive(address, context);
+                                        context.read<ProfileProvider>().fetchUserAddresses();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 2.w,
+                                          vertical: 1.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            5.sp,
+                                          ),
+                                          color: greyShade3,
+                                        ),
+                                        child: Text(
+                                          'Marcar como activa',
+                                          style: AppTextStyles.body14,
+                                        ),
+                                      ),
                                     ),
-                                    color: greyShade3,
-                                  ),
-                                  child: Text(
-                                    'Eliminar',
-                                    style: AppTextStyles.body14,
-                                  ),
-                                ),
-                              ],
-                            )
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w,
+                                        vertical: 1.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          5.sp,
+                                        ),
+                                        color: greyShade3,
+                                      ),
+                                      child: Text(
+                                        'Editar',
+                                        style: AppTextStyles.body14,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w,
+                                        vertical: 1.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          5.sp,
+                                        ),
+                                        color: greyShade3,
+                                      ),
+                                      child: Text(
+                                        'Eliminar',
+                                        style: AppTextStyles.body14,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            }),
                           ],
                         ),
                       );
@@ -192,18 +247,31 @@ class _AddressScreenState extends State<AddressScreen> {
               height: 2.h,
             ),
             CommonElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, PageTransition(child: const AddAddressScreen(), type: PageTransitionType.rightToLeft));
-                },
-                color: black,
-                child: Row(mainAxisSize: MainAxisSize.min,
-                  children: [FaIcon(FontAwesomeIcons.plus,color: white,),SizedBox(width: 3.w,),
-                    Text(
-                      'Agregar una dirección',
-                      style: AppTextStyles.body14.copyWith(color: white),
-                    ),
-                  ],
-                ))
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: const AddAddressScreen(),
+                        type: PageTransitionType.rightToLeft));
+              },
+              color: black,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.plus,
+                    color: white,
+                  ),
+                  SizedBox(
+                    width: 3.w,
+                  ),
+                  Text(
+                    'Agregar una dirección',
+                    style: AppTextStyles.body14.copyWith(color: white),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

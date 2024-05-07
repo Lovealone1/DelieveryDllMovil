@@ -2,6 +2,7 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserAddressModel {
+  String addressID;
   String userId;
   double latitude; 
   double longitude; 
@@ -11,6 +12,7 @@ class UserAddressModel {
   DateTime uploadTime; 
   bool isActive; 
   UserAddressModel({
+    required this.addressID,
     required this.userId,
     required this.latitude,
     required this.longitude,
@@ -23,6 +25,7 @@ class UserAddressModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'addressID': addressID,
       'userId': userId,
       'latitude': latitude,
       'longitude': longitude,
@@ -36,6 +39,7 @@ class UserAddressModel {
 
   factory UserAddressModel.fromMap(Map<String, dynamic> map) {
     return UserAddressModel(
+      addressID: map['addressID'] as String,
       userId: map['userId'] as String,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
