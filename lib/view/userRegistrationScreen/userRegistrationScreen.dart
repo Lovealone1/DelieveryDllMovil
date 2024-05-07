@@ -2,8 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delievery/constant/constant.dart';
 import 'package:food_delievery/controller/provider/profileProvider/profileProvider.dart';
+import 'package:food_delievery/controller/services/imageServices/imageServices.dart';
 import 'package:food_delievery/controller/services/locationServices/locationServices.dart';
+import 'package:food_delievery/controller/services/userDataCRUDServices/userDataCRUDServices.dart';
+import 'package:food_delievery/model/userAddressModel.dart';
+import 'package:food_delievery/model/userModel.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
 import 'package:food_delievery/widgets/commonElevatedButton.dart';
@@ -27,7 +32,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   TextEditingController saveAddressAsController = TextEditingController();
   bool registerButtonPressed = false;
   CameraPosition initialCameraPosition = const CameraPosition(
-    target: LatLng(6.230833, -75.590553),
+    target: LatLng(6.2529, -75.5646),
     zoom: 14,
   );
   Completer<GoogleMapController> googleMapController = Completer();
@@ -145,7 +150,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
               height: 4.h,
             ),
             CommonTextfield(
-              controller: apartmentController,
+              controller: saveAddressAsController,
               title: 'Guardar dirección como',
               hintText: 'Trabajo/ Casa/ Familia/',
               keyboardType: TextInputType.name,
@@ -154,12 +159,48 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
               height: 4.h,
             ),
             CommonElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  setState(() {
+                    registerButtonPressed = true;
+                  });
+                  List<String> urls =
+                      await ImageServices.uploadImagesToFirebaseStorageNGetURL(
+                    images: [context.read<ProfileProvider>().profileImage!],
+                    context: context,
+                  );
+                  UserModel userData = UserModel(
+                    name: nameController.text.trim(),
+                    profilePicURL: urls[0],
+                    userID: auth.currentUser!.uid,
+                  );
+                  Position location =
+                      await LocationServices.getCurrentLocation();
+                  UserAddressModel addressData = UserAddressModel(
+                      userId: auth.currentUser!.uid,
+                      latitude: location.latitude,
+                      longitude: location.longitude,
+                      houseNumber: houseController.text.trim(),
+                      apartment: apartmentController.text.trim(),
+                      addressTitle: saveAddressAsController.text.trim(),
+                      uploadTime: DateTime.now(),
+                      isActive: false);
+                  // ignore: use_build_context_synchronously
+                  UserDataCRUDServices.registerUser(
+                    userData,
+                    context,
+                  );
+                  // ignore: use_build_context_synchronously
+                  UserDataCRUDServices.addAddress(addressData, context);
+                },
                 color: black,
-                child: registerButtonPressed? CircularProgressIndicator(color: white,): Text(
-                  'Guardar dirección',
-                  style: AppTextStyles.body16Bold.copyWith(color: white),
-                ))
+                child: registerButtonPressed
+                    ? CircularProgressIndicator(
+                        color: white,
+                      )
+                    : Text(
+                        'Guardar dirección',
+                        style: AppTextStyles.body16Bold.copyWith(color: white),
+                      ))
           ],
         ),
       ),

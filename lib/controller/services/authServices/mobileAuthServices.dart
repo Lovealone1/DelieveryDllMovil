@@ -8,6 +8,7 @@ import 'package:food_delievery/view/authScreens/mobileLoginScreen.dart';
 import 'package:food_delievery/view/authScreens/otpScreen.dart';
 import 'package:food_delievery/view/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:food_delievery/view/signInLogicScreen/signInLoginScreen.dart';
+import 'package:food_delievery/view/userRegistrationScreen/userRegistrationScreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -21,11 +22,7 @@ class MobileAuthServices {
           (route) => false);
       return false;
     }
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const BottomNavigationBarDelievery()),
-        (route) => false);
+    checkUserRegistration(context: context);
     return true;
   }
 
@@ -74,6 +71,42 @@ class MobileAuthServices {
           type: PageTransitionType.rightToLeft,
         ),
       );
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  static checkUserRegistration({required BuildContext context}) async {
+    bool userIsRegistered = false;
+    try {
+      await firestore
+          .collection('User')
+          .where('userID', isEqualTo: auth.currentUser!.uid)
+          .get()
+          .then((value) {
+        value.size > 0
+            ? userIsRegistered = true
+            : userIsRegistered = false;
+        log('El usuario ya está registrado = $userIsRegistered');
+        if (userIsRegistered) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageTransition(
+                child: const BottomNavigationBarDelievery(),
+                type: PageTransitionType.rightToLeft),
+            (route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageTransition(
+                child: const UserRegistrationScreen(),
+                type: PageTransitionType.rightToLeft),
+            (route) => false,
+          );
+        }
+      });
     } catch (e) {
       log(e.toString());
       throw Exception(e);

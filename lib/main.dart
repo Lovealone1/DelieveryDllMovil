@@ -4,11 +4,12 @@ import 'package:food_delievery/controller/provider/authProvider/MobileAuthProvid
 import 'package:food_delievery/controller/provider/profileProvider/profileProvider.dart';
 import 'package:food_delievery/controller/provider/restaurantProvider/restaurantProvider.dart';
 import 'package:food_delievery/firebase_options.dart';
+import 'package:food_delievery/view/signInLogicScreen/signInLoginScreen.dart';
 //import 'package:food_delievery/view/authScreens/mobileLoginScreen.dart';
 //import 'package:food_delievery/view/authScreens/otpScreen.dart';
 //import 'package:food_delievery/view/bottomNavigationBar/bottomNavigationBar.dart';
 //import 'package:food_delievery/view/signInLogicScreen/signInLoginScreen.dart';
-import 'package:food_delievery/view/userRegistrationScreen/userRegistrationScreen.dart';
+//import 'package:food_delievery/view/userRegistrationScreen/userRegistrationScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -42,8 +43,8 @@ class FoodDelievery extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(),
-          //home: const SignInLogicScreen()),
-          home: UserRegistrationScreen(),
+          home: const SignInLogicScreen(),
+          //home: UserRegistrationScreen(),
         ),
       );
     });
