@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_delievery/controller/provider/profileProvider/profileProvider.dart';
+import 'package:food_delievery/controller/services/authServices/mobileAuthServices.dart';
 import 'package:food_delievery/model/userModel.dart';
 import 'package:food_delievery/utils/colors.dart';
 import 'package:food_delievery/utils/textStyles.dart';
@@ -119,6 +120,9 @@ class _AccountScreenState extends State<AccountScreen> {
                         type: PageTransitionType.rightToLeft,
                       ),
                     );
+                  }
+                  if(index == (account.length - 1)) {
+                    MobileAuthServices.signOut(context);
                   }
                 },
                 leading: FaIcon(

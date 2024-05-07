@@ -22,7 +22,7 @@ class _SignInLogicScreenState extends State<SignInLogicScreen> {
       body: Image(
         image: AssetImage(
           'assets/images/splashScreenImage/SplashScreen.png',
-        ),
+        ),fit: BoxFit.fill,
       ),
     );
   }
