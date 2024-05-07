@@ -33,9 +33,10 @@ class UserDataCRUDServices {
 
   static addAddress(UserAddressModel data, BuildContext context) async {
     try {
+      String docID = uuid.v1().toString();
       await firestore
           .collection('Address')
-          .doc(auth.currentUser!.uid)
+          .doc(docID)
           .set(data.toMap())
           .whenComplete(() {
         ToastService.sendScaffoldAlert(
@@ -62,5 +63,23 @@ class UserDataCRUDServices {
       log(e.toString());
       throw Exception(e);
     }
+  }
+
+  static fetchAddresses() async {
+    List<UserAddressModel> addresses = [];
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection('Address')
+          .where('userId', isEqualTo: auth.currentUser!.uid)
+          .get();
+      // ignore: avoid_function_literals_in_foreach_calls
+      snapshot.docs.forEach((element) {
+        addresses.add(UserAddressModel.fromMap(element.data()));
+      });
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e);
+    }
+    return addresses;
   }
 }
