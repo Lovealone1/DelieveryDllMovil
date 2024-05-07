@@ -9,6 +9,7 @@ import 'package:food_delievery/view/authScreens/otpScreen.dart';
 import 'package:food_delievery/view/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:food_delievery/view/signInLogicScreen/signInLoginScreen.dart';
 import 'package:food_delievery/view/userRegistrationScreen/userRegistrationScreen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -85,9 +86,7 @@ class MobileAuthServices {
           .where('userID', isEqualTo: auth.currentUser!.uid)
           .get()
           .then((value) {
-        value.size > 0
-            ? userIsRegistered = true
-            : userIsRegistered = false;
+        value.size > 0 ? userIsRegistered = true : userIsRegistered = false;
         log('El usuario ya está registrado = $userIsRegistered');
         if (userIsRegistered) {
           Navigator.pushAndRemoveUntil(
@@ -110,6 +109,64 @@ class MobileAuthServices {
     } catch (e) {
       log(e.toString());
       throw Exception(e);
+    }
+  }
+
+  static signOut(BuildContext context) {
+    auth.signOut();
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) {
+      return const SignInLogicScreen();
+    }), (route) => false);
+  }
+
+  static Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      // Iniciar el flujo de autenticación de Google
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtener los detalles de autenticación de la solicitud
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Crear una credencial con los tokens de acceso e ID
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Iniciar sesión con la credencial de Google en Firebase
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Verificar si el usuario está registrado
+      bool isUserRegistered = await checkUserRegistration(context: context);
+
+      // Si el usuario está registrado, lo redirigimos a la aplicación
+      if (isUserRegistered) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          PageTransition(
+            child: const BottomNavigationBarDelievery(),
+            type: PageTransitionType.rightToLeft,
+          ),
+          (route) => false,
+        );
+      } else {
+        // Si el usuario no está registrado, lo redirigimos a la pantalla de registro
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          PageTransition(
+            child: const UserRegistrationScreen(),
+            type: PageTransitionType.rightToLeft,
+          ),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      // Manejar cualquier error que pueda ocurrir durante el proceso
+      throw Exception('Error al iniciar sesión con Google: $e');
     }
   }
 }

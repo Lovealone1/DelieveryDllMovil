@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -189,7 +191,13 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
             height: 2.h,
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () async{
+                try {
+                  await MobileAuthServices.signInWithGoogle(context);
+                } catch (e) {
+                  log(e.toString());
+                }
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: white,
                   minimumSize: Size(90.w, 6.h),
