@@ -35,13 +35,20 @@ dependencies:
   flutter_styled_toast: ^2.2.1
   google_maps_flutter: ^2.5.3
   google_sign_in: ^6.2.1
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
 
+flutter_launcher_icons:
+  android: true
+  os: true
+  image_path: "assets/images/appIcon/logo.png"
+  adaptive_icon_foreground: "assets/images/appIcon/logo.png"
 
 flutter:
 
@@ -49,6 +56,7 @@ flutter:
   assets:
     - assets/categories/
     - assets/images/splashScreenImage/
+    - assets/images/appIcon/logo.png
   fonts: 
     - family: UberMoveMedium
       fonts: 
