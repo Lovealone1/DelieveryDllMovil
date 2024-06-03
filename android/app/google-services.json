@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105302244532",
+    "project_id": "covefood-52c23",
+    "storage_bucket": "covefood-52c23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105302244532:android:016a9aa06e1ca49780abe1",
+        "android_client_info": {
+          "package_name": "com.example.covefood_users"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAWbcGqcQH68yKwGpJlV9jvcsmVAD-wJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
