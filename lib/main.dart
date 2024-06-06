@@ -1,4 +1,5 @@
 import 'package:covefood_users/controller/provider/authProvider/mobileAuthProvider.dart';
+import 'package:covefood_users/controller/provider/profileProvider/profileProvider.dart';
 import 'package:covefood_users/controller/provider/restaurantProvider/restaurantProvider.dart';
 import 'package:covefood_users/firebase_options.dart';
 import 'package:covefood_users/views/singInLogicScreen/signInLogicScreen.dart';
@@ -28,12 +29,17 @@ class FoodDelievery extends StatelessWidget {
           ChangeNotifierProvider<RestaurantProvider>(
             create: (_) => RestaurantProvider(),
           ),
+          ChangeNotifierProvider<ProfileProvider>(
+            create: (_) => ProfileProvider(),
+          ),
         ],
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(),
-            home: const SignInLogicScreen()),
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(),
+          home: const SignInLogicScreen(),
+          //home: UserRegistrationScreen(),
+        ),
       );
     });
   }

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:covefood_users/controller/services/fetchRestaurantServices/fetchRestaurantServices.dart';
+import 'package:covefood_users/controller/services/fetchRestaurantsServices/fetchRestaurantServices.dart';
 import 'package:covefood_users/model/foodModel.dart';
 import 'package:covefood_users/model/restaurantModel.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class RestaurantProvider extends ChangeNotifier {
   List<FoodModel> searchedFood = [];
   addRestaurants(String restaurantID) async {
     RestaurantModel data =
-        await RestaurantServices.fetchRestaurantData(restaurantID);
+        await RestaurantServices.fetchResturantData(restaurantID);
     restaurants.add(data);
     notifyListeners();
     log('Restaurantes capturados');

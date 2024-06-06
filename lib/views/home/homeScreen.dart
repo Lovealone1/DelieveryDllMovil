@@ -1,3 +1,5 @@
+
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:covefood_users/controller/provider/restaurantProvider/restaurantProvider.dart';
 import 'package:covefood_users/model/restaurantModel.dart';
@@ -5,6 +7,7 @@ import 'package:covefood_users/utils/colors.dart';
 import 'package:covefood_users/utils/textStyles.dart';
 import 'package:covefood_users/views/particularMenuScreen/particularMenuScreen.dart';
 import 'package:flutter/material.dart';
+
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';

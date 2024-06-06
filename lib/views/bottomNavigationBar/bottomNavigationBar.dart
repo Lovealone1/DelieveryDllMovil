@@ -1,5 +1,4 @@
-import 'package:covefood_users/controller/services/fetchRestaurantServices/fetchRestaurantServices.dart';
-import 'package:covefood_users/utils/colors.dart';
+import 'package:covefood_users/controller/services/delieveryPartnerServices/delieveryPartnerServices.dart';
 import 'package:covefood_users/views/account/account.dart';
 import 'package:covefood_users/views/basket/basketScreen.dart';
 import 'package:covefood_users/views/browse/browseScreen.dart';
@@ -7,8 +6,9 @@ import 'package:covefood_users/views/categoryScreen/categoryScreen.dart';
 import 'package:covefood_users/views/home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:covefood_users/controller/services/fetchRestaurantsServices/fetchRestaurantServices.dart';
+import 'package:covefood_users/utils/colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
 
 class BottomNavigationBarDelievery extends StatefulWidget {
   const BottomNavigationBarDelievery({super.key});
@@ -22,6 +22,7 @@ class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDeliev
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)async { 
+      DelieveryPartnerServices.getNearbyDelieveryPartners();
       RestaurantServices.getNearbyRestaurants(context);
     });
   }
@@ -104,3 +105,4 @@ class _BottomNavigationBarDelieveryState extends State<BottomNavigationBarDeliev
     );
   }
 }
+

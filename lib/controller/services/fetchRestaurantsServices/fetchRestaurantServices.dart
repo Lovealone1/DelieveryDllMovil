@@ -4,12 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covefood_users/constant/constant.dart';
 import 'package:covefood_users/controller/provider/restaurantProvider/restaurantProvider.dart';
 import 'package:covefood_users/model/foodModel.dart';
-
 import 'package:covefood_users/model/restaurantModel.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:provider/provider.dart';
-//import 'package:provider/provider.dart';
+
 
 class RestaurantServices {
   static Future<void> getNearbyRestaurants(BuildContext context) async {
@@ -35,12 +34,16 @@ class RestaurantServices {
     }
   }
 
-  static fetchRestaurantData(String restaurantID) async {
+  static removeGeofireListeners() async {
+    bool? response = await Geofire.stopListener();
+    log(response.toString());
+  }
+
+  static fetchResturantData(String restaurantUID) async {
     try {
-      final DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore
-          .collection('Restaurant')
-          .doc(restaurantID)
-          .get();
+      final DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await firestore.collection('Restaurant').doc(restaurantUID).get();
+
       RestaurantModel data = RestaurantModel.fromMap(snapshot.data()!);
       return data;
     } catch (e) {
@@ -49,13 +52,13 @@ class RestaurantServices {
     }
   }
 
-  static fetchFoodData(String restaurantID) async {
+  static fetchFoodData(String resturantID) async {
     List<FoodModel> foodData = [];
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
           .collection('Food')
           .orderBy('uploadTime', descending: true)
-          .where('restaurantUID', isEqualTo: restaurantID)
+          .where('resturantUID', isEqualTo: resturantID)
           .get();
       snapshot.docs.forEach((element) {
         foodData.add(FoodModel.fromMap(element.data()));
@@ -66,4 +69,7 @@ class RestaurantServices {
     }
     return foodData;
   }
+}
+
+class ResturantProvider {
 }

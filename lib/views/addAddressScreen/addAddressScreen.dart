@@ -1,32 +1,31 @@
-import 'dart:async';
+// ignore_for_file: use_build_context_synchronously
 
-import 'package:covefood_users/widget/commonElevatedButton.dart';
-import 'package:covefood_users/widget/textFieldWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:async';
 import 'package:covefood_users/constant/constant.dart';
 import 'package:covefood_users/controller/provider/profileProvider/profileProvider.dart';
-import 'package:covefood_users/controller/services/imageServices/imageServices.dart';
 import 'package:covefood_users/controller/services/locationServices/locationServices.dart';
 import 'package:covefood_users/controller/services/userDataCRUDServices/userDataCRUDServices.dart';
 import 'package:covefood_users/model/userAddressModel.dart';
-import 'package:covefood_users/model/userModel.dart';
 import 'package:covefood_users/utils/colors.dart';
 import 'package:covefood_users/utils/textStyles.dart';
+import 'package:covefood_users/widget/commonElevatedButton.dart';
+import 'package:covefood_users/widget/textFieldWidget.dart';
+import 'package:covefood_users/widget/toastService.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class UserRegistrationScreen extends StatefulWidget {
-  const UserRegistrationScreen({super.key});
+class AddAddressScreen extends StatefulWidget {
+  const AddAddressScreen({super.key});
 
   @override
-  State<UserRegistrationScreen> createState() => _UserRegistrationScreenState();
+  State<AddAddressScreen> createState() => _AddAddressScreenState();
 }
 
-class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
-  TextEditingController nameController = TextEditingController();
+class _AddAddressScreenState extends State<AddAddressScreen> {
   TextEditingController houseController = TextEditingController();
   TextEditingController apartmentController = TextEditingController();
   TextEditingController saveAddressAsController = TextEditingController();
@@ -43,58 +42,23 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: white,
-          title: Text(
-            'Registrate!',
-            style: AppTextStyles.body16Bold,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: FaIcon(
+              FontAwesomeIcons.arrowLeft,
+              color: black,
+            ),
           ),
         ),
         body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: 3.w,
+            vertical: 2.h,
+          ),
           children: [
-            SizedBox(
-              height: 2.h,
-            ),
-            Consumer<ProfileProvider>(
-                builder: (context, profileProvider, child) {
-              return InkWell(
-                onTap: () async {
-                  await context
-                      .read<ProfileProvider>()
-                      .pickImageFromGallery(context);
-                },
-                child: CircleAvatar(
-                  radius: 5.h,
-                  backgroundColor: black,
-                  child: CircleAvatar(
-                      backgroundColor: white,
-                      radius: 5.h - 2,
-                      backgroundImage: profileProvider.profileImage != null
-                          ? FileImage(profileProvider.profileImage!)
-                          : null,
-                      child: profileProvider.profileImage == null
-                          ? FaIcon(
-                              FontAwesomeIcons.user,
-                              size: 4.h,
-                              color: black,
-                            )
-                          : null),
-                ),
-              );
-            }),
-            SizedBox(
-              height: 4.h,
-            ),
-            CommonTextfield(
-              controller: nameController,
-              title: 'Nombre',
-              hintText: 'Nombre completo',
-              keyboardType: TextInputType.name,
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
             Text(
-              'Dirección',
+              'Agregar nueva dirección',
               style: AppTextStyles.body16Bold,
             ),
             SizedBox(
@@ -163,19 +127,10 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                   setState(() {
                     registerButtonPressed = true;
                   });
-                  List<String> urls =
-                      await ImageServices.uploadImagesToFirebaseStorageNGetURL(
-                    images: [context.read<ProfileProvider>().profileImage!],
-                    context: context,
-                  );
-                  UserModel userData = UserModel(
-                    name: nameController.text.trim(),
-                    profilePicURL: urls[0],
-                    userID: auth.currentUser!.uid,
-                  );
+
                   Position location =
                       await LocationServices.getCurrentLocation();
-                  String addressID = uuid.v1().toString();
+                      String addressID = uuid.v1().toString();
                   UserAddressModel addressData = UserAddressModel(
                       addressID: addressID,
                       userId: auth.currentUser!.uid,
@@ -185,15 +140,15 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                       apartment: apartmentController.text.trim(),
                       addressTitle: saveAddressAsController.text.trim(),
                       uploadTime: DateTime.now(),
-                      isActive: true);
-                  // ignore: use_build_context_synchronously
-                  UserDataCRUDServices.registerUser(
-                    userData,
-                    context,
-                  );
-
-                  // ignore: use_build_context_synchronously
+                      isActive: false);
                   await UserDataCRUDServices.addAddress(addressData, context);
+                  Navigator.pop(context);
+                  context.read<ProfileProvider>().fetchUserAddresses();
+                  ToastService.sendScaffoldAlert(
+                    msg: 'Dirección agregada correctamente',
+                    toastStatus: 'SUCCESS',
+                    context: context,
+                  );
                 },
                 color: black,
                 child: registerButtonPressed

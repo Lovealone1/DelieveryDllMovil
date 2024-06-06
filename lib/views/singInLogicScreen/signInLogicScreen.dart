@@ -1,5 +1,6 @@
 import 'package:covefood_users/controller/services/authServices/mobileAuthServices.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class SignInLogicScreen extends StatefulWidget {
   const SignInLogicScreen({super.key});
@@ -17,11 +18,16 @@ class _SignInLogicScreenState extends State<SignInLogicScreen> {
      });
   }
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Image(
-        image: AssetImage(
-          'assets/images/splashScreenImage/SplashScreen.png',
+   Widget build(BuildContext context) {
+    return Scaffold(
+      body: SizedBox(
+        height: 100.h,
+        width: 100.w,
+        child: const Image(
+          image: AssetImage(
+            'assets/images/splashScreenImage/SplashScreen.png',
+          ),
+          fit: BoxFit.fill,
         ),
       ),
     );

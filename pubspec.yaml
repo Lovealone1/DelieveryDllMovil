@@ -12,6 +12,8 @@ dependencies:
   country_picker: ^2.0.26
   firebase_auth: ^4.17.8
   firebase_core: ^2.27.0
+  firebase_database: ^10.4.9
+  firebase_messaging: ^14.7.19
   firebase_storage: ^11.6.9
   flutter:
     sdk: flutter
@@ -21,6 +23,7 @@ dependencies:
   geolocator: ^11.1.0
   google_maps_flutter: ^2.5.3
   google_sign_in: ^6.2.1
+  http: ^1.2.0
   image_picker: ^1.0.8
   page_transition: ^2.1.0
   persistent_bottom_nav_bar: ^5.0.2
