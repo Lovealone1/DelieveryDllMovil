@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:covefood_users/controller/services/APIsNKetys/APIs.dart';
 import 'package:covefood_users/controller/services/APIsNKetys/keys.dart';
 import 'package:covefood_users/model/driverModel.dart';
+import 'package:covefood_users/model/foodOrderModel.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:covefood_users/constant/constant.dart';
 import 'package:http/http.dart' as http;
@@ -75,16 +76,16 @@ class PushNotificationServices {
     
   }
 
-  static sendPushNotificationToRestaurant(String fcmToken, String foodName) async {
+  static sendPushNotificationToRestaurant(FoodOrderModel foodOrderData) async {
     try {
       final api = Uri.parse(APIs.pushNotificationAPI());
       var body = jsonEncode({
-        "to": fcmToken,
+        "to": foodOrderData.restaurantDetails.cloudMessagingToken,
         "notification": {
-          "body": "Nueva orden de $foodName",
-          "title": "Nueva orden",
+          "body": "Nueva orden de ${foodOrderData.foodDetails.name}",
+          "title": "Nueva orden ${foodOrderData.foodDetails.name}",
         },
-        "data": {"foodName": "Text"}
+        "data": foodOrderData.toMap
       });
       var headers = {
         'Content-type': 'application/json',

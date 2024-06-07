@@ -12,6 +12,7 @@ class ProfileProvider extends ChangeNotifier{
   String? profileImageURL; 
   UserModel? userData;
   List<UserAddressModel> addresses = [];
+  UserAddressModel? activeAddress;
   pickImageFromGallery(BuildContext context)async{
     profileImage = await ImageServices.pickSingleImage(context: context);
     notifyListeners();
@@ -31,10 +32,17 @@ class ProfileProvider extends ChangeNotifier{
   fetchUserData()async{
     userData = await UserDataCRUDServices.fetchUserData();
     notifyListeners();
+    log(userData!.toMap().toString());
   }
 
   fetchUserAddresses()async{
     addresses = await UserDataCRUDServices.fetchAddresses();
+    for (var address in addresses) {
+      if(address.isActive){
+        activeAddress = address;
+      }
+    }
     notifyListeners();
+    log(activeAddress!.toMap().toString());
   }
 }

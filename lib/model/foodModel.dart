@@ -1,6 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FoodModel {
   String name;
   String restaurantUID;
@@ -11,49 +12,61 @@ class FoodModel {
   bool isVegetarian;
   String actualPrice;
   String discountedPrice;
-  FoodModel(
-      {required this.name,
-      required this.restaurantUID,
-      required this.foodID,
-      required this.uploadTime,
-      required this.description,
-      required this.foodImageURL,
-      required this.isVegetarian,
-      required this.actualPrice,
-      required this.discountedPrice,});
+  int? quantity;
+  DateTime? addedToCartAt;
+  String? orderID;
+  FoodModel({
+    required this.name,
+    required this.restaurantUID,
+    required this.foodID,
+    required this.uploadTime,
+    required this.description,
+    required this.foodImageURL,
+    required this.isVegetarian,
+    required this.actualPrice,
+    required this.discountedPrice,
+    this.quantity,
+    this.addedToCartAt,
+    this.orderID,
+  });
+
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
       'restaurantUID': restaurantUID,
       'foodID': foodID,
-      'uploadTime': uploadTime,
+      'uploadTime': uploadTime.millisecondsSinceEpoch,
       'description': description,
       'foodImageURL': foodImageURL,
       'isVegetarian': isVegetarian,
       'actualPrice': actualPrice,
       'discountedPrice': discountedPrice,
+      'quantity': quantity,
+      'addedToCartAt': addedToCartAt?.millisecondsSinceEpoch,
+      'orderID': orderID,
     };
   }
 
   factory FoodModel.fromMap(Map<String, dynamic> map) {
     return FoodModel(
-      name: map['name'] != null ? map['name'] as String : '',
-      restaurantUID:
-          map['restaurantUID'] != null ? map['restaurantUID'] as String : '',
-      foodID: map['foodID'] != null ? map['foodID'] as String : '',
-      uploadTime: map['uploadTime'] != null ? (map['uploadTime'] as Timestamp).toDate() : DateTime.now(),
-      description:
-          map['description'] != null ? map['description'] as String : '',
-      foodImageURL:
-          map['foodImageURL'] != null ? map['foodImageURL'] as String : '',
-      isVegetarian:
-          map['isVegetarian'] != null ? map['isVegetarian'] as bool : false,
-      actualPrice: map['actualPrice'] != null ? map['actualPrice'] as String : '',
-      discountedPrice: map['discountedPrice'] != null ? map['discountedPrice'] as String : '',
+      name: map['name'] as String,
+      restaurantUID: map['restaurantUID'] as String,
+      foodID: map['foodID'] as String,
+      uploadTime: DateTime.fromMillisecondsSinceEpoch(map['uploadTime'] as int),
+      description: map['description'] as String,
+      foodImageURL: map['foodImageURL'] as String,
+      isVegetarian: map['isVegetarian'] as bool,
+      actualPrice: map['actualPrice'] as String,
+      discountedPrice: map['discountedPrice'] as String,
+      quantity: map['quantity'] != null ? map['quantity'] as int : null,
+      addedToCartAt: map['addedToCartAt'] != null ? DateTime.fromMillisecondsSinceEpoch(map['addedToCartAt'] as int) : null,
+      orderID: map['orderID'] != null ? map['orderID'] as String : null,
+      
     );
   }
 
   String toJson() => json.encode(toMap());
-  factory FoodModel.fromJson(String source) =>
-      FoodModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  factory FoodModel.fromJson(String source) => FoodModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

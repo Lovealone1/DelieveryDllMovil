@@ -52,13 +52,13 @@ class RestaurantServices {
     }
   }
 
-  static fetchFoodData(String resturantID) async {
+  static fetchFoodData(String restaurantID) async {
     List<FoodModel> foodData = [];
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
           .collection('Food')
           .orderBy('uploadTime', descending: true)
-          .where('resturantUID', isEqualTo: resturantID)
+          .where('restaurantUID', isEqualTo: restaurantID)
           .get();
       snapshot.docs.forEach((element) {
         foodData.add(FoodModel.fromMap(element.data()));
@@ -69,7 +69,4 @@ class RestaurantServices {
     }
     return foodData;
   }
-}
-
-class ResturantProvider {
 }

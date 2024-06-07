@@ -1,9 +1,14 @@
+import 'package:covefood_users/constant/constant.dart';
+import 'package:covefood_users/controller/provider/itemOrderProvider/itemOrderProvider.dart';
+import 'package:covefood_users/controller/services/foodOrderServices/foodOrderServices.dart';
 import 'package:covefood_users/model/foodModel.dart';
 import 'package:covefood_users/utils/colors.dart';
 import 'package:covefood_users/utils/textStyles.dart';
 import 'package:covefood_users/widget/commonElevatedButton.dart';
+import 'package:covefood_users/widget/toastService.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class FoodDetailsScreen extends StatefulWidget {
@@ -80,7 +85,8 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
           ),
           Container(
             height: 6.h,
-            width: 100.w,padding: EdgeInsets.symmetric(horizontal: 5.w),
+            width: 100.w,
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
             decoration: BoxDecoration(
               color: green200,
               borderRadius: BorderRadius.circular(
@@ -182,12 +188,39 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
             height: 4.h,
           ),
           CommonElevatedButton(
+            onPressed: () async {
+              if (quantity > 0) {
+                String foodID = uuid.v1();
+                FoodModel foodData = FoodModel(
+                  name: widget.foodModel.name,
+                  restaurantUID: widget.foodModel.restaurantUID,
+                  foodID: widget.foodModel.foodID,
+                  uploadTime: widget.foodModel.uploadTime,
+                  description: widget.foodModel.description,
+                  foodImageURL: widget.foodModel.foodImageURL,
+                  isVegetarian: widget.foodModel.isVegetarian,
+                  actualPrice: widget.foodModel.actualPrice,
+                  discountedPrice: widget.foodModel.discountedPrice,
+                  quantity: quantity,
+                  addedToCartAt: DateTime.now(),
+                  orderID: foodID,
+                );
+                await FoodOrderServices.addItemToCart(foodData, context);
+                // ignore: use_build_context_synchronously
+                context.read<ItemOrderProvider>().fetchCartItems();
+              } else {
+                ToastService.sendScaffoldAlert(
+                    msg: 'Selecciona una cantidad válida',
+                    toastStatus: 'WARNING',
+                    context: context);
+              }
+            },
             // ignore: sort_child_properties_last
             child: Text(
               'Agregar al carrito',
               style: AppTextStyles.body14Bold.copyWith(color: black),
             ),
-            onPressed: () {},
+
             color: white,
           ),
           SizedBox(
